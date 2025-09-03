@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-
+import "./index.css";
 // 생성된 경로 트리 가져오기
 import { routeTree } from "./routeTree.gen";
 import { StrictMode } from "react";
