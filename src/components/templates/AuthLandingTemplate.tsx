@@ -1,7 +1,7 @@
 import React from "react";
-import BackHeader from "../molcules/BackHeader";
+import BackHeader from "../molecules/BackHeader";
 import Icon from "../atoms/Icon";
-import { SocialButton } from "../molcules/SocialButton";
+import { SocialButton } from "../molecules/SocialButton";
 
 type AuthLandingTemplateProps = {
   onBack?: () => void;
