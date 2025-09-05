@@ -16,7 +16,7 @@ export default function Landing() {
 
   return (
     <div className="App">
-      {/* 지도 영역 수민 */}ß{" "}
+      {/* 지도 영역 수민 */}
       <div style={{ padding: "24px" }}>
         {/* 검색창 */}
         <div

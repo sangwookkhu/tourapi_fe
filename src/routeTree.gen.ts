@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LandingIndexRouteImport } from './routes/landing/index'
+import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingIndexRoute = LandingIndexRouteImport.update({
+  id: '/landing/',
+  path: '/landing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
+  id: '/login/checkPermission',
+  path: '/login/checkPermission',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/landing': typeof LandingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/landing': typeof LandingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login/checkPermission': typeof LoginCheckPermissionRoute
+  '/landing/': typeof LandingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login/checkPermission' | '/landing'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/login/checkPermission' | '/landing'
+  id: '__root__' | '/' | '/login/checkPermission' | '/landing/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
+  LandingIndexRoute: typeof LandingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/': {
+      id: '/landing/'
+      path: '/landing'
+      fullPath: '/landing'
+      preLoaderRoute: typeof LandingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/checkPermission': {
+      id: '/login/checkPermission'
+      path: '/login/checkPermission'
+      fullPath: '/login/checkPermission'
+      preLoaderRoute: typeof LoginCheckPermissionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginCheckPermissionRoute: LoginCheckPermissionRoute,
+  LandingIndexRoute: LandingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
