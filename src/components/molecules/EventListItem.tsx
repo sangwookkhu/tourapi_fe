@@ -17,15 +17,15 @@ type Props = {
 export default function EventListItem({ item, onClick }: Props) {
   return (
     <Button
-      className="w-full p-0 bg-gray-100"
+      className="w-full p-0 "
       aria-label={item.title}
       onClick={() => onClick?.(item.id)}
     >
-      <div className="w-full py-4 bg-green-100">
-        <div className="flex items-center gap-4 bg-red-100">
+      <div className="w-full py-4 ">
+        <div className="flex items-center gap-4">
           {/* 텍스트 영역 */}
-          <div className="flex-1 min-w-0 bg-yellow-100">
-            <div className="flex items-baseline gap-2 bg-pink-100">
+          <div className="flex-1 min-w-0 ">
+            <div className="flex items-baseline gap-2">
               <Label
                 content={item.title}
                 className="text-[15px] font-semibold text-black truncate"
