@@ -9,16 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HomeDemoRouteImport } from './routes/home-demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
+import { Route as LandingCafeRouteImport } from './routes/landing/cafe'
 
-const HomeDemoRoute = HomeDemoRouteImport.update({
-  id: '/home-demo',
-  path: '/home-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -34,50 +29,53 @@ const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
   path: '/login/checkPermission',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingCafeRoute = LandingCafeRouteImport.update({
+  id: '/landing/cafe',
+  path: '/landing/cafe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
+  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
+  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
+  '/landing/cafe': typeof LandingCafeRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing/': typeof LandingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home-demo' | '/login/checkPermission' | '/landing'
+  fullPaths: '/' | '/landing/cafe' | '/login/checkPermission' | '/landing'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home-demo' | '/login/checkPermission' | '/landing'
-  id: '__root__' | '/' | '/home-demo' | '/login/checkPermission' | '/landing/'
+  to: '/' | '/landing/cafe' | '/login/checkPermission' | '/landing'
+  id:
+    | '__root__'
+    | '/'
+    | '/landing/cafe'
+    | '/login/checkPermission'
+    | '/landing/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeDemoRoute: typeof HomeDemoRoute
+  LandingCafeRoute: typeof LandingCafeRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LandingIndexRoute: typeof LandingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/home-demo': {
-      id: '/home-demo'
-      path: '/home-demo'
-      fullPath: '/home-demo'
-      preLoaderRoute: typeof HomeDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -99,12 +97,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginCheckPermissionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/cafe': {
+      id: '/landing/cafe'
+      path: '/landing/cafe'
+      fullPath: '/landing/cafe'
+      preLoaderRoute: typeof LandingCafeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeDemoRoute: HomeDemoRoute,
+  LandingCafeRoute: LandingCafeRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LandingIndexRoute: LandingIndexRoute,
 }
