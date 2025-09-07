@@ -19,10 +19,10 @@ export default function CategoryItem({
       onClick={onClick}
       aria-label={label}
       className="
-        w-[61px] h-[82px]          /* 바깥 흰색 박스 */                
-        inline-flex flex-col items-center justify-start
-        gap-2                     /* 아이콘-라벨 간격 */
-        p-0                       /* 내부 여백 없음 */
+        w-[61px] h-[82px]          
+        inline-flex flex-col items-center justify-center
+        gap-2                    
+        p-0                     
       "
     >
       {/* 회색 아이콘 박스 */}
