@@ -21,7 +21,7 @@ export default function AuthLandingTemplate({
 }: AuthLandingTemplateProps) {
   return (
     <div className="h-[100vh] p-10">
-      <div className="flex h-[7vh] items-center">
+      <div className="flex items-center">
         <BackHeader onBack={onBack} />
       </div>
       <div className="flex h-[45vh] flex-8 w-full items-center justify-center">

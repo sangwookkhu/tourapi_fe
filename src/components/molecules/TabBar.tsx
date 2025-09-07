@@ -11,6 +11,14 @@ export default function TabBar({ className = "" }: TabBarProps) {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  // 탭바를 숨길 경로 목록
+  const hiddenPaths = ['/login', '/signup', '/permission'];
+  
+  // 현재 경로가 숨김 목록에 있으면 탭바를 렌더링하지 않음
+  if (hiddenPaths.includes(currentPath)) {
+    return null;
+  }
+
   return (
     <nav
       className={`w-full bg-white border-t border-black/5
@@ -25,36 +33,36 @@ export default function TabBar({ className = "" }: TabBarProps) {
             activeIconSrc="/Assets/icons/HomeActive.svg"
             inactiveIconSrc="/Assets/icons/Home.svg"
             label="홈"
-            active={currentPath === "/landing"}
-            onClick={() => navigate({ to: "/landing" })}
+            active={currentPath === "/"}
+            onClick={() => navigate({ to: "/" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/PawPrintActive.svg"
             inactiveIconSrc="/Assets/icons/PawPrint.svg"
             label="마이펫"
             active={currentPath === "/mypet"}
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate({ to: "/login" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/ChatActive.svg"
             inactiveIconSrc="/Assets/icons/Chat.svg"
             label="챗봇"
             active={currentPath === "/chat"}
-            onClick={() => navigate({ to: "/landing" })}
+            onClick={() => navigate({ to: "/" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/StarActive.svg"
             inactiveIconSrc="/Assets/icons/Star.svg"
             label="찜하기"
             active={currentPath === "/wish"}
-            onClick={() => navigate({ to: "/landing" })}
+            onClick={() => navigate({ to: "/" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/UserActive.svg"
             inactiveIconSrc="/Assets/icons/User.svg"
             label="프로필"
             active={currentPath === "/profile"}
-            onClick={() => navigate({ to: "/landing" })}
+            onClick={() => navigate({ to: "/" })}
           />
         </div>
       </div>

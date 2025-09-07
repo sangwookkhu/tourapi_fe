@@ -9,19 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HomeDemoRouteImport } from './routes/home-demo'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as LandingIndexRouteImport } from './routes/landing/index'
 import { Route as LoginCheckPermissionRouteImport } from './routes/login/checkPermission'
 
-const HomeDemoRoute = HomeDemoRouteImport.update({
-  id: '/home-demo',
-  path: '/home-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingIndexRoute = LandingIndexRouteImport.update({
@@ -37,52 +37,52 @@ const LoginCheckPermissionRoute = LoginCheckPermissionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing': typeof LandingIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/home-demo': typeof HomeDemoRoute
   '/login/checkPermission': typeof LoginCheckPermissionRoute
   '/landing/': typeof LandingIndexRoute
+  '/login/': typeof LoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home-demo' | '/login/checkPermission' | '/landing'
+  fullPaths: '/' | '/login/checkPermission' | '/landing' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home-demo' | '/login/checkPermission' | '/landing'
-  id: '__root__' | '/' | '/home-demo' | '/login/checkPermission' | '/landing/'
+  to: '/' | '/login/checkPermission' | '/landing' | '/login'
+  id: '__root__' | '/' | '/login/checkPermission' | '/landing/' | '/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeDemoRoute: typeof HomeDemoRoute
   LoginCheckPermissionRoute: typeof LoginCheckPermissionRoute
   LandingIndexRoute: typeof LandingIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/home-demo': {
-      id: '/home-demo'
-      path: '/home-demo'
-      fullPath: '/home-demo'
-      preLoaderRoute: typeof HomeDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/landing/': {
@@ -104,9 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeDemoRoute: HomeDemoRoute,
   LoginCheckPermissionRoute: LoginCheckPermissionRoute,
   LandingIndexRoute: LandingIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

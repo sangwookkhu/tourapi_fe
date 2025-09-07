@@ -6,9 +6,11 @@ export default function LoginLandingPage() {
   const router = useRouter();
   const onBack = () => router.history.go(-1);
   const onNaver = () => {
-    navigate({ to: "/landing" }); //임시로직, 추후 변경 필요
+    navigate({ to: "/" }); //임시로직, 추후 변경 필요
   };
-  const onKakao = () => {};
+  const onKakao = () => {
+    navigate({ to: "/login/checkPermission" });
+  };
   const onGoogle = () => {};
   return (
     <AuthLandingTemplate
