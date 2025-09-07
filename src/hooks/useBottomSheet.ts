@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { SpringValue, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
@@ -16,31 +16,66 @@ interface UseBottomSheetReturn {
   bind: ReturnType<typeof useDrag>;
 }
 
-const clamp = (n: number, min: number, max: number) =>
-  Math.max(min, Math.min(max, n));
-
 export function useBottomSheet({
   minHeight,
   maxHeight,
   open,
   onClose,
 }: UseBottomSheetProps): UseBottomSheetReturn {
+  const clamp = (n: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, n));
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [{ height, y }, api] = useSpring(() => ({
     height: minHeight,
     y: 0,
-    config: { tension: 180, friction: 24, clamp: true },
+    config: {
+      tension: 200,
+      friction: 20,
+      clamp: true, // 목표값에 도달하면 정확히 멈추도록 설정
+    },
   }));
 
   // stale state 방지
   const expandedRef = useRef(isExpanded);
   expandedRef.current = isExpanded;
 
+  // 마운트될 때 높이 설정
+  useEffect(() => {
+    if (isExpanded) {
+      api.start({
+        to: { height: maxHeight, y: 0 },
+        immediate: false,
+      });
+    } else {
+      api.start({
+        to: { height: minHeight, y: 0 },
+        immediate: true,
+      });
+    }
+  }, [isExpanded, api, maxHeight, minHeight]);
+
   const bind = useDrag(
-    ({ last, movement: [, my], direction: [, dy] }) => {
-      // 방향 판정
-      const goingUp = dy < 0;
-      const goingDown = dy > 0;
+    ({ last, movement: [, my], tap }) => {
+      // 탭 동작 처리
+      if (tap) {
+        if (expandedRef.current) {
+          setIsExpanded(false);
+          api.start({
+            to: { height: minHeight, y: 0 },
+            immediate: false,
+            config: { tension: 300, friction: 30, clamp: true },
+          });
+        } else {
+          setIsExpanded(true);
+          api.start({
+            to: { height: maxHeight, y: 0 },
+            immediate: false,
+            config: { tension: 300, friction: 30, clamp: true },
+          });
+        }
+        return;
+      }
 
       if (!last) {
         // 드래그 중
@@ -48,16 +83,17 @@ export function useBottomSheet({
         let nextY: number;
 
         if (expandedRef.current) {
-          // 펼친 상태: 위로는 유지(최대), 아래로는 축소
+          // 펼친 상태에서 드래그
           nextHeight = clamp(maxHeight - my, minHeight, maxHeight);
-          nextY = clamp(my > 0 ? my / 2 : 0, 0, minHeight); // y 값 제한
+          nextY = clamp(my > 0 ? my / 2 : 0, 0, minHeight);
         } else {
-          // 접힌 상태: 위로 확장
+          // 접힌 상태에서 드래그
           const deltaUp = Math.max(0, -my);
           nextHeight = clamp(minHeight + deltaUp, minHeight, maxHeight);
-          nextY = clamp(my > 0 ? my : 0, 0, minHeight); // y 값 제한
+          nextY = clamp(my > 0 ? my : 0, 0, minHeight);
         }
 
+        // 드래그 중에는 즉시 반영
         api.start({
           to: {
             height: nextHeight,
@@ -68,47 +104,9 @@ export function useBottomSheet({
         return;
       }
 
-      // 드래그 끝(스냅 결정)
-      // 아래로 빠르게/많이 → 접히거나 닫기
-      if (goingDown) {
-        if (expandedRef.current) {
-          setIsExpanded(false);
-          api.start({
-            to: {
-              height: minHeight,
-              y: 0,
-            },
-            immediate: true,
-            config: { tension: 200, friction: 20 },
-          });
-        } else {
-          // 이미 접힌 상태에서 더 아래로 스와이프 → 닫기
-          api.start({
-            to: { y: minHeight },
-            immediate: true,
-            config: { tension: 200, friction: 20 },
-            onRest: onClose,
-          });
-        }
-        return;
-      }
-
-      // 위로 드래그하면 확장
-      if (goingUp) {
-        setIsExpanded(true);
-        api.start({
-          to: {
-            height: maxHeight,
-            y: 0,
-          },
-          immediate: true,
-          config: { tension: 200, friction: 20 },
-        });
-        return;
-      }
-
-      // 마지막 드래그 방향에 따라 결정
-      if (goingUp) {
+      // 드래그 끝났을 때 처리
+      if (my < -30 && !expandedRef.current) {
+        // 위로 많이 드래그하면 확장
         setIsExpanded(true);
         api.start({
           to: {
@@ -116,9 +114,14 @@ export function useBottomSheet({
             y: 0,
           },
           immediate: false,
-          config: { tension: 200, friction: 20 },
+          config: {
+            tension: 300, // 더 빠른 스프링
+            friction: 30, // 더 강한 감쇠
+            clamp: true, // 정확한 위치에서 멈춤
+          },
         });
-      } else {
+      } else if (my > 30 && expandedRef.current) {
+        // 아래로 많이 드래그하면 축소
         setIsExpanded(false);
         api.start({
           to: {
@@ -126,14 +129,26 @@ export function useBottomSheet({
             y: 0,
           },
           immediate: false,
-          config: { tension: 200, friction: 20 },
+        });
+      } else if (my > 30 && !expandedRef.current) {
+        // 많이 내리면 닫기
+        setIsExpanded(false);
+        onClose();
+      } else {
+        // 현재 상태 유지
+        api.start({
+          to: {
+            height: expandedRef.current ? maxHeight : minHeight,
+            y: 0,
+          },
+          immediate: false,
         });
       }
     },
     {
       axis: "y",
       filterTaps: true,
-      threshold: 3, // 미세 터치 무시
+      threshold: 3,
       enabled: open,
       eventOptions: { passive: false },
     }
