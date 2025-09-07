@@ -2,12 +2,21 @@ import React from "react";
 import MapArea from "../organisms/home/MapArea";
 import CategoryGrid from "../molecules/CategoryGrid";
 import type { CategoryItemProps } from "../molecules/CategoryItem";
+import EventListSection from "../molecules/EventListSection";
+import type { EventListItemData } from "../molecules/EventListItem";
+
+
 
 type Props = {
   categories: CategoryItemProps[];
+  eventTitle: string;                       // "7월의 펫 이벤트"
+  events: EventListItemData[];              // 리스트 아이템들
+  onMoreEvents?: () => void;                // 전체보기 버튼
+  onEventClick?: (id: string | number) => void; // 리스트 아이템 클릭
+
 };
 
-export default function HomeTemplate({ categories }: Props) {
+export default function HomeTemplate({ categories, eventTitle, events, onMoreEvents, onEventClick }: Props) {
   const [mode, setMode] = React.useState<"browse" | "mapFocus">("browse");
   const mapExpanded = mode === "mapFocus";
 
@@ -34,6 +43,14 @@ export default function HomeTemplate({ categories }: Props) {
         <div className="px-4 pt-4">
           <CategoryGrid items={categories} />
         </div>
+        <div className="px-6 pt-8 pb-4">
+          <EventListSection
+            title={eventTitle}
+            items={events}
+            onMore={onMoreEvents}
+            onItemClick={onEventClick}
+          />
+          </div>
       </div>
     </div>
   );

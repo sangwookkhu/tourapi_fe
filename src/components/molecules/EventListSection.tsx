@@ -20,7 +20,7 @@ export default function EventListSection({
   return (
     <section className={`w-full ${className}`}>
       {/* 헤더 */}
-      <div className="flex items-center justify-between py-4 bg-blue-100">
+      <div className="flex items-center justify-between py-4">
         <Label
           content={title}
           className="text-[20px] font-bold text-black"

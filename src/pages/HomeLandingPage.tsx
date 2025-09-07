@@ -1,5 +1,6 @@
 import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
 import type { Category } from "../components/molecules/CategoryGrid";
+import type { EventListItemData } from "../components/molecules/EventListItem";
 //import { useRouter } from "@tanstack/react-router";  // 필요하면 라우팅에서 사용
 
 export default function HomeLandingPage() {
@@ -45,6 +46,31 @@ export default function HomeLandingPage() {
       onClick: () => {},
     },
   ];
+  // 이벤트 리스트 더미 데이터
+  const events: EventListItemData[] = [
+    {
+      id: 1,
+      title: "해피독 여름 물놀이 축제",
+      tag: "축제",
+      subtitle: "경기도 가평군 청평면 물빛로 123",
+      thumbnailSrc: "/Assets/images/event1.jpg",
+    },
+    {
+      id: 2,
+      title: "펫스파 힐링데이",
+      tag: "스파",
+      subtitle: "서울 강남구 반려로 45",
+      thumbnailSrc: "/Assets/images/event2.jpg",
+    },
+  ];
 
-  return <HomeLandingTemplate categories={categories} />;
+    return (
+    <HomeLandingTemplate
+      categories={categories}
+      eventTitle="7월의 펫 이벤트"
+      events={events}
+      onMoreEvents={() => console.log("전체보기 클릭")}
+      onEventClick={(id) => console.log("아이템 클릭:", id)}
+    />
+  );
 }

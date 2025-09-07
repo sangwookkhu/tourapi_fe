@@ -29,7 +29,7 @@ export default function TabBar({ className = "" }: TabBarProps) {
             onClick={() => navigate({ to: "/landing" })}
           />
           <TabBarItem
-            activeIconSrc="/Assets/icons/PawPrint.svg"
+            activeIconSrc="/Assets/icons/PawPrintActive.svg"
             inactiveIconSrc="/Assets/icons/PawPrint.svg"
             label="마이펫"
             active={currentPath === "/mypet"}
