@@ -1,6 +1,7 @@
 // organisms/home/MapArea.tsx
+import { memo } from "react";
 import SearchBar from "../../molecules/SearchBar";
-import { Map } from "react-kakao-maps-sdk";
+import KakaoMap from "./KakaoMap";
 
 type MapAreaProps = {
   expanded: boolean;
@@ -8,30 +9,31 @@ type MapAreaProps = {
   onBackdropTap: () => void;
 };
 
-export default function MapArea({
-  expanded,
-  onTap,
-  onBackdropTap,
-}: MapAreaProps) {
+function MapArea({ expanded, onTap, onBackdropTap }: MapAreaProps) {
   return (
     <div
-      className="relative h-full w-full"
+      className={`
+        relative w-full 
+        transition-[height,margin] duration-1200 ease-in-out
+        ${expanded ? "h-screen mb-0" : "h-56 mb-14"}
+      `}
       onClick={expanded ? undefined : onTap}
     >
       {/* 실제 지도 SDK 붙이는 자리 */}
-      <Map
-        center={{ lat: 33.450701, lng: 126.570667 }}
-        className="w-full h-full min-h-56"
-        level={3}
-      />
+      <KakaoMap expanded={expanded} />
 
       {/* 검색바 */}
-      <div className="relative z-10 w-[90vw] mx-auto -translate-y-1/2">
+      <div
+        className={`
+          z-10 w-[100vw] px-[5vw] 
+          transition-all duration-1200 ease-in-out
+          ${expanded ? "absolute -translate-y-[95vh]" : "absolute -translate-y-1/2"}
+        `}
+      >
         <SearchBar onFocus={onTap} />
       </div>
       {expanded && (
         <>
-          <div className="flex flex-col gap-3">÷{/* FAB */}</div>
           <button
             aria-label="닫기"
             onClick={onBackdropTap}
@@ -44,3 +46,5 @@ export default function MapArea({
     </div>
   );
 }
+
+export default memo(MapArea);

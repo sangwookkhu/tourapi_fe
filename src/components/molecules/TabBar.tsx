@@ -1,15 +1,16 @@
 // 탭바
 import TabBarItem from "./TabBarItem";
-
-type TabKey = "home" | "mypet" | "chat" | "wish" | "profile";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 
 type TabBarProps = {
-  current: TabKey;
-  onChange?: (key: TabKey) => void;
   className?: string;
 };
 
-export default function TabBar({ current, onChange, className = "" }: TabBarProps) {
+export default function TabBar({ className = "" }: TabBarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
     <nav
       className={`w-full bg-white border-t border-black/5
@@ -24,40 +25,39 @@ export default function TabBar({ current, onChange, className = "" }: TabBarProp
             activeIconSrc="/Assets/icons/HomeActive.svg"
             inactiveIconSrc="/Assets/icons/Home.svg"
             label="홈"
-            active={current==="home"}
-            onClick={() => onChange?.("home")}
+            active={currentPath === "/landing"}
+            onClick={() => navigate({ to: "/landing" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/PawPrint.svg"
             inactiveIconSrc="/Assets/icons/PawPrint.svg"
             label="마이펫"
-            active={current==="mypet"}
-            onClick={() => onChange?.("mypet")}
+            active={currentPath === "/mypet"}
+            onClick={() => navigate({ to: "/" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/ChatActive.svg"
             inactiveIconSrc="/Assets/icons/Chat.svg"
             label="챗봇"
-            active={current==="chat"}
-            onClick={() => onChange?.("chat")}
+            active={currentPath === "/chat"}
+            onClick={() => navigate({ to: "/landing" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/StarActive.svg"
             inactiveIconSrc="/Assets/icons/Star.svg"
             label="찜하기"
-            active={current==="wish"}
-            onClick={() => onChange?.("wish")}
+            active={currentPath === "/wish"}
+            onClick={() => navigate({ to: "/landing" })}
           />
           <TabBarItem
             activeIconSrc="/Assets/icons/UserActive.svg"
             inactiveIconSrc="/Assets/icons/User.svg"
             label="프로필"
-            active={current==="profile"}
-            onClick={() => onChange?.("profile")}
+            active={currentPath === "/profile"}
+            onClick={() => navigate({ to: "/landing" })}
           />
         </div>
       </div>
     </nav>
   );
 }
-
