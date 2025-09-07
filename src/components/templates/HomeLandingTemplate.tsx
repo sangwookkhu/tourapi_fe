@@ -1,53 +1,39 @@
-import SearchBar from "../molecules/SearchBar";
+import React from "react";
+import MapArea from "../organisms/home/MapArea";
 import CategoryGrid from "../molecules/CategoryGrid";
-import type { Category } from "../molecules/CategoryGrid";
-import TabBar from "../molecules/TabBar";
+import type { CategoryItemProps } from "../molecules/CategoryItem";
 
-type TabKey = "home" | "mypet" | "chat" | "wish" | "profile";
-
-type HomeLandingTemplateProps = {
-  // Search
-  search: string;
-  onSearchChange: (v: string) => void;
-  onSearchSubmit: (v: string) => void;
-
-  // Categories
-  categories: Category[];
-
-  // Tab
-  currentTab: TabKey;
-  onTabChange: (t: TabKey) => void;
+type Props = {
+  categories: CategoryItemProps[];
 };
 
-export default function HomeLandingTemplate({
-  search,
-  onSearchChange,
-  onSearchSubmit,
-  categories,
-  currentTab,
-  onTabChange,
-}: HomeLandingTemplateProps) {
+export default function HomeTemplate({ categories }: Props) {
+  const [mode, setMode] = React.useState<"browse" | "mapFocus">("browse");
+  const mapExpanded = mode === "mapFocus";
+
+  const handleMapTap = () => {
+    setMode("mapFocus");
+  };
+
+  const handleMapBackdropTap = () => {
+    setMode("browse");
+  };
   return (
-    <div className="min-h-dvh flex flex-col
-                    pt-[env(safe-area-inset-top)]
-                    pb-[env(safe-area-inset-bottom)]">
-      {/* 상단 검색 */}
-      <div className="px-4 pt-4">
-        <SearchBar
-          value={search}
-          onChange={onSearchChange}
-          onSubmit={onSearchSubmit}
+    <div className="min-h-screen flex flex-col">
+      {/* 상단 Map */}
+      <div className={mapExpanded ? "flex-1" : "h-56"}>
+        <MapArea
+          expanded={mapExpanded}
+          onTap={handleMapTap}
+          onBackdropTap={handleMapBackdropTap}
         />
       </div>
 
-      {/* 카테고리 그리드 */}
-      <div className="flex-1 px-4 py-6">
-        <CategoryGrid items={categories} />
-      </div>
-
-      {/* 하단 탭바 */}
-      <div className="sticky bottom-0 left-0 right-0">
-        <TabBar current={currentTab} onChange={onTabChange} />
+      {/* 하단 컨텐츠 */}
+      <div className={mapExpanded ? "hidden" : "block"}>
+        <div className="px-4 pt-4">
+          <CategoryGrid items={categories} />
+        </div>
       </div>
     </div>
   );
