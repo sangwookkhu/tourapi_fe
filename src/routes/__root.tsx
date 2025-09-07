@@ -5,7 +5,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <Outlet />
-      <TabBar className="fixed bottom-0 left-0 z-40" current="home" />
+      <TabBar className="fixed bottom-0 left-0 z-40" />
     </>
   ),
 });
