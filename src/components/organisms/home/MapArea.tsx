@@ -1,5 +1,6 @@
 // organisms/home/MapArea.tsx
 import SearchBar from "../../molecules/SearchBar";
+import { Map } from "react-kakao-maps-sdk";
 
 type MapAreaProps = {
   expanded: boolean;
@@ -18,20 +19,19 @@ export default function MapArea({
       onClick={expanded ? undefined : onTap}
     >
       {/* 실제 지도 SDK 붙이는 자리 */}
-      <div className="absolute inset-0 bg-[url('/Assets/map-placeholder.png')] bg-cover" />
+      <Map
+        center={{ lat: 33.450701, lng: 126.570667 }}
+        className="w-full h-full min-h-56"
+        level={3}
+      />
 
       {/* 검색바 */}
-      <div className="absolute left-4 right-4 top-16">
+      <div className="relative z-10 w-[90vw] mx-auto -translate-y-1/2">
         <SearchBar onFocus={onTap} />
       </div>
-
-      {/* FAB/칩/핀: expanded에서만 보여주기 */}
       {expanded && (
         <>
-          <div className="absolute right-4 top-1/3 flex flex-col gap-3">
-            ÷{/* FAB */}
-          </div>
-          {/* 바깥 영역 탭으로 browse 복귀 */}
+          <div className="flex flex-col gap-3">÷{/* FAB */}</div>
           <button
             aria-label="닫기"
             onClick={onBackdropTap}

@@ -21,7 +21,7 @@ export default function HomeTemplate({ categories }: Props) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* 상단 Map */}
-      <div className={mapExpanded ? "flex-1" : "h-56"}>
+      <div className={mapExpanded ? "flex-1" : "h-fit"}>
         <MapArea
           expanded={mapExpanded}
           onTap={handleMapTap}
