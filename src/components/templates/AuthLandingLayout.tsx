@@ -1,4 +1,3 @@
-import React from "react";
 import BackHeader from "../molecules/BackHeader";
 import Icon from "../atoms/Icon";
 import { SocialButton } from "../molecules/SocialButton";
@@ -21,7 +20,7 @@ export default function AuthLandingTemplate({
 }: AuthLandingTemplateProps) {
   return (
     <div className="h-[100vh] p-10">
-      <div className="flex items-center">
+      <div className="">
         <BackHeader onBack={onBack} />
       </div>
       <div className="flex h-[45vh] flex-8 w-full items-center justify-center">

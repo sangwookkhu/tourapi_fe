@@ -11,14 +11,6 @@ export default function TabBar({ className = "" }: TabBarProps) {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // 탭바를 숨길 경로 목록
-  const hiddenPaths = ['/login', '/signup', '/permission'];
-  
-  // 현재 경로가 숨김 목록에 있으면 탭바를 렌더링하지 않음
-  if (hiddenPaths.includes(currentPath)) {
-    return null;
-  }
-
   return (
     <nav
       className={`w-full bg-white border-t border-black/5

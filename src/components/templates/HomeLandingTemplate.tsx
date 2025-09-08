@@ -31,7 +31,7 @@ export default function HomeTemplate({
     setMode("browse");
   };
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className=" gap-14 min-h-screen flex flex-col relative">
       {/* 상단 Map */}
       <div className={mapExpanded ? "flex-1" : "h-fit"}>
         <MapArea
@@ -43,22 +43,27 @@ export default function HomeTemplate({
 
       {/* 하단 컨텐츠 */}
       <div
-        className={`transition-all duration-1000 ease-in-out absolute w-full bottom-20 ${
-          mapExpanded
-            ? "opacity-0 translate-y-full invisible"
-            : "opacity-100 translate-y-0 visible"
-        }`}
+        className={`fixed top-56 pt-8 left-0 right-0 bg-white 
+                    h-[calc(100vh-310px)] 
+                    transition-all duration-100 ease-in-out
+                    ${
+                      mapExpanded
+                        ? "opacity-0 translate-y-full invisible"
+                        : "opacity-100 translate-y-0 visible"
+                    }`}
       >
-        <div className="px-4 pt-4">
-          <CategoryGrid items={categories} />
-        </div>
-        <div className="px-6 pt-8 pb-4">
-          <EventListSection
-            title={eventTitle}
-            items={events}
-            onMore={onMoreEvents}
-            onItemClick={onEventClick}
-          />
+        <div className="h-full overflow-y-auto">
+          <div className="px-4 pt-4">
+            <CategoryGrid items={categories} />
+          </div>
+          <div className="px-6 pt-8 pb-[calc(4rem+env(safe-area-inset-bottom))]">
+            <EventListSection
+              title={eventTitle}
+              items={events}
+              onMore={onMoreEvents}
+              onItemClick={onEventClick}
+            />
+          </div>
         </div>
       </div>
     </div>

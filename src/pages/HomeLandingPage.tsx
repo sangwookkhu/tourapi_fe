@@ -1,9 +1,12 @@
 import HomeLandingTemplate from "../components/templates/HomeLandingTemplate";
 import type { Category } from "../components/molecules/CategoryGrid";
 import type { EventListItemData } from "../components/molecules/EventListItem";
-//import { useRouter } from "@tanstack/react-router";  // 필요하면 라우팅에서 사용
+import { useRouter } from "@tanstack/react-router";
 
 export default function HomeLandingPage() {
+  const router = useRouter();
+
+  // 카테고리
   const categories: Category[] = [
     {
       iconSrc: "/Assets/icons/categories/Suitcase.svg",
@@ -28,7 +31,7 @@ export default function HomeLandingPage() {
     {
       iconSrc: "/Assets/icons/categories/Coffee.svg",
       label: "카페",
-      onClick: () => {},
+      onClick: () => router.navigate({ to: "/landing/cafe" }),
     },
     {
       iconSrc: "/Assets/icons/categories/ShoppingCart.svg",
@@ -46,6 +49,7 @@ export default function HomeLandingPage() {
       onClick: () => {},
     },
   ];
+
   // 이벤트 리스트 더미 데이터
   const events: EventListItemData[] = [
     {
